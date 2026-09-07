@@ -3,9 +3,7 @@ This is a small (and rushed) program used to convert .ttf files to a code-readab
 This project was primarily made to support my custom ROBLOX text rendering system, please excuse if it's missing any important data.
 
 ## Installation
-Either:
-  Grab the .exe from the [releases](https://github.com/unby6/ttf-to-lua/releases/latest) section
-  or build the executable yourself.
+Either grab the .exe from the [releases](https://github.com/unby6/ttf-to-lua/releases/latest) section or build the executable yourself.
 
 ## Build Preparation
 This project requires [LayoutFarm's Typography library](https://github.com/LayoutFarm/Typography) to properly function.
