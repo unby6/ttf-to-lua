@@ -19,4 +19,4 @@ Simply drag-and-drop your desired .ttf file on top of the executable,
 a new .lua file containing the font data will then be created under the same directory your .ttf file originates from.
 
 ## Data Read Example
-For an example on what each part of the glyph data array means and how to read from it, check out ReadExample.lua
+For an example on what each part of the glyph data array means and how to read from it, check out ReadExample.luau
