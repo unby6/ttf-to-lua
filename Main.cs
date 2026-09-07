@@ -124,6 +124,5 @@ static class Program
         writer.Write(finalOutput);
 
         Console.WriteLine("Done!");
-        Console.ReadKey();
     }
 }
