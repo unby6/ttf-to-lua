@@ -1,10 +1,10 @@
-﻿using System.Diagnostics;
 using System.Text;
 using Typography.OpenFont;
-using static System.Net.Mime.MediaTypeNames;
 
 static class Program
 {
+    static Dictionary<ushort, string> glyphMap;
+
     static string Truncate(this string value, int maxLength)
     {
         if (string.IsNullOrEmpty(value))
@@ -16,17 +16,34 @@ static class Program
     {
         return new string('\t', count);
     }
-    static string? GetChar(Typeface font, ushort glyphId)
+
+    static Dictionary<ushort, string> BuildGlyphMap(Typeface font)
     {
+        Dictionary<ushort, string> map = new();
+
         for (int codePoint = 0; codePoint <= 0x10FFFF; codePoint++)
         {
-            if (font.GetGlyphIndex(codePoint) == glyphId)
+            ushort glyphId = font.GetGlyphIndex(codePoint);
+
+            if (glyphId == 0)
+                continue;
+
+            if (!map.ContainsKey(glyphId))
             {
-                return char.ConvertFromUtf32(codePoint);
+                map[glyphId] = char.ConvertFromUtf32(codePoint);
             }
         }
 
-        return null;
+        return map;
+    }
+
+
+    static string? GetChar(Typeface font, ushort glyphId)
+    {
+        if (!glyphMap.ContainsKey(glyphId))
+            return null;
+
+        return glyphMap[glyphId];
     }
     static string? GetGlyphString(Typeface font, ushort glyphId)
     {
@@ -49,8 +66,7 @@ static class Program
         finStr += $"{glyph.Bounds.XMin},";
         finStr += $"{glyph.Bounds.XMax},";
         finStr += $"{glyph.Bounds.YMin},";
-        finStr += $"{glyph.Bounds.YMax}";
-        finStr += $"}}";
+        finStr += $"{glyph.Bounds.YMax}}}";
         return finStr;
     }
     static void Main(string[] args)
@@ -87,6 +103,7 @@ static class Program
             + $"{Tabs(1)}}},\n"
             + $"{Tabs(1)}GlyphConfig = {{\n";
 
+        glyphMap = BuildGlyphMap(font);
         for (ushort i=0; i < font.GlyphCount; i++)
         {
             string? thestr = GetGlyphString(font, i);
@@ -101,7 +118,7 @@ static class Program
 
         Console.WriteLine("Writing File...");
 
-        FileStream outputFile = File.Create(Truncate(args[0], args[0].Length-4) + ".txt");
+        FileStream outputFile = File.Create(Truncate(args[0], args[0].Length-4) + ".lua");
         using StreamWriter writer = new(outputFile, Encoding.UTF8);
 
         writer.Write(finalOutput);
