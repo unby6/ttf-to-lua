@@ -1,4 +1,4 @@
-# TTF to Lua
+# .TTF to Lua
 This is a small program used to convert .ttf files to a code-readable lua(u) table.
 This project was primarily made to support my custom ROBLOX text rendering system
 
